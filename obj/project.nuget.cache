@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "KleDOqsKJQHRIFj0O2dCVO8Um7+UvlJsZuxgv1yj+pERRchN+c3u5ToP2J6SmRbXDTmcd+f0VTQuTqGE/qUSqw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\jcast\\proyectos\\pica\\proyecto\\sds-notificaciones\\sds-notificaciones.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
