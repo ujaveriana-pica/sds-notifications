@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.3" />
     <PackageReference Include="SendGrid" Version="9.24.4" />
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />

@@ -9,10 +9,17 @@ using sds.notificaciones.core.entities;
 namespace sds.notificaciones.core.services {
     public class NotificacionServiceImpl : NotificacionService
     {
+        private readonly MailRepository mailRepository;
+
+        public NotificacionServiceImpl(MailRepository mailRepository)
+        {
+            this.mailRepository = mailRepository;
+        }
         public void send(Notificacion notificacion) 
         {
             var mail = GenerateMail(notificacion);
-            Execute(mail).Wait();
+            //Execute(mail).Wait();
+            mailRepository.Save(mail);
         }
 
         private Mail GenerateMail(Notificacion notificacion) 

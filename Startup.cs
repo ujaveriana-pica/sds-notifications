@@ -13,6 +13,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.services;
+using sds.notificaciones.infraestructure.repositories;
+using sds.notificaciones.infraestructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace sds_notificaciones
 {
@@ -36,6 +39,29 @@ namespace sds_notificaciones
             });
 
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
+            services.AddScoped<MailRepository, MailRepositoryImpl>();
+            
+            // Mysql configuration
+            var connectionString = "server=192.168.99.100;user=root;password=traste;database=notificaciones";
+
+            // Replace with your server version and type.
+            // Use 'MariaDbServerVersion' for MariaDB.
+            // Alternatively, use 'ServerVersion.AutoDetect(connectionString)'.
+            // For common usages, see pull request #1233.
+            //var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
+            var serverVersion = ServerVersion.AutoDetect(connectionString);
+
+            // Replace 'YourDbContext' with the name of your own DbContext derived class.
+            services.AddDbContext<DbContextImpl>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(connectionString, serverVersion)
+                    // The following three options help with debugging, but should
+                    // be changed or removed for production.
+                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors()
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
