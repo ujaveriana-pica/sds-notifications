@@ -16,6 +16,7 @@ using sds.notificaciones.core.services;
 using sds.notificaciones.infraestructure.repositories;
 using sds.notificaciones.infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
+using sds.notificaciones.infraestructure.Clients;
 
 namespace sds_notificaciones
 {
@@ -40,6 +41,7 @@ namespace sds_notificaciones
 
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
             services.AddScoped<MailRepository, MailRepositoryImpl>();
+            services.AddScoped<MailClient, MailClientSendGrid>();
             
             // Mysql configuration
             var connectionString = "server=192.168.99.100;user=root;password=traste;database=notificaciones";
