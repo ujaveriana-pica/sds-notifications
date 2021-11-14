@@ -4,6 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Antlr4.StringTemplate;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using sds.notificaciones.core.Interfaces;
+using sds.notificaciones.core.DTO;
 
 namespace sds_notificaciones.Controllers
 {
@@ -11,6 +16,7 @@ namespace sds_notificaciones.Controllers
     [Route("[controller]")]
     public class NotificacionController : ControllerBase
     {
+        private readonly NotificacionService notificacionService;
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -18,9 +24,10 @@ namespace sds_notificaciones.Controllers
 
         private readonly ILogger<NotificacionController> _logger;
 
-        public NotificacionController(ILogger<NotificacionController> logger)
+        public NotificacionController(ILogger<NotificacionController> logger, NotificacionService notificacionService )
         {
             _logger = logger;
+            this.notificacionService = notificacionService;
         }
 
         [HttpGet]
@@ -37,9 +44,12 @@ namespace sds_notificaciones.Controllers
         }
 
         [HttpPost]
-        public NotificacionRequest Send([FromBody] NotificacionRequest notificacionRequest) 
+        public Notificacion Send([FromBody] Notificacion notificacion) 
         {
-            return notificacionRequest;
+            notificacionService.send(notificacion);
+            return notificacion;
         }
+
+        
     }
 }

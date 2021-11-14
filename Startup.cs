@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using sds.notificaciones.core.Interfaces;
+using sds.notificaciones.core.services;
 
 namespace sds_notificaciones
 {
@@ -32,6 +34,8 @@ namespace sds_notificaciones
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "sds_notificaciones", Version = "v1" });
             });
+
+            services.AddScoped<NotificacionService, NotificacionServiceImpl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
