@@ -46,6 +46,7 @@ namespace sds_notificaciones.Controllers
         [HttpPost]
         public Notificacion Send([FromBody] Notificacion notificacion) 
         {
+            //System.Console.WriteLine("Nombre: " + notificacion.variables["nombre"]);
             notificacionService.send(notificacion);
             return notificacion;
         }

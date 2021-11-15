@@ -3,12 +3,22 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json;
+using sds.notificaciones.core.DTO;
+using sds.notificaciones.core.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace sds.notificaciones.infraestructure.Messaging
 {
     public class KafkaConsumerHandler : IHostedService
     {
         private readonly string topic = "notificaciones";
+        public IServiceScopeFactory serviceScopeFactory;
+
+        public KafkaConsumerHandler(IServiceScopeFactory serviceScopeFactory)
+        {
+            this.serviceScopeFactory = serviceScopeFactory;
+        }
         public Task StartAsync(CancellationToken cancellationToken)
         {
             var conf = new ConsumerConfig
@@ -26,7 +36,19 @@ namespace sds.notificaciones.infraestructure.Messaging
                     while (!cancellationToken.IsCancellationRequested)
                     {
                         var consumer = builder.Consume(cancellationToken);
-                        Console.WriteLine($"Message: {consumer.Message.Value} received from {consumer.TopicPartitionOffset}");
+                        try 
+                        {
+                            var notificacion = JsonSerializer.Deserialize<Notificacion>(consumer.Message.Value);
+                            using (var scope = serviceScopeFactory.CreateScope())
+                            {
+                                NotificacionService notificacionService = scope.ServiceProvider.GetRequiredService<NotificacionService>();
+                                notificacionService.send(notificacion);
+                            }
+                        }
+                        catch(JsonException ex) 
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                     }
                 }
                 catch (Exception)
