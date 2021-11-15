@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +12,8 @@ using sds.notificaciones.infraestructure.repositories;
 using sds.notificaciones.infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
 using sds.notificaciones.infraestructure.Clients;
+using sds.notificaciones.infraestructure.Messaging;
+using Confluent.Kafka;
 
 namespace sds_notificaciones
 {
@@ -39,6 +36,16 @@ namespace sds_notificaciones
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "sds_notificaciones", Version = "v1" });
             });
 
+            // Kafka consumer
+            /*
+            var consumerConfig = Configuration.GetSection("ConsumerConfig").Get<ConsumerConfig>();
+            var consumer = new ConsumerBuilder<string, int>(consumerConfig).Build();
+            consumer.Subscribe("notificaciones");
+
+            services.AddHostedService(sp =>
+                new KafkaConsumer(sp.GetRequiredService<ILogger<KafkaConsumer>>(), consumer));
+                */
+            services.AddSingleton<IHostedService, KafkaConsumerHandler>();
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
             services.AddScoped<MailRepository, MailRepositoryImpl>();
             services.AddScoped<MailClient, MailClientSendGrid>();
