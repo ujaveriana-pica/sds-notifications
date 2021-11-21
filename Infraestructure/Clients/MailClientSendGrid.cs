@@ -2,6 +2,7 @@ using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.entities;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System;
 
 namespace sds.notificaciones.infraestructure.Clients
 {
@@ -9,8 +10,7 @@ namespace sds.notificaciones.infraestructure.Clients
     {
         public void send(Mail mail) 
         {
-            //var apiKey = Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
-            var apiKey = "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";           
+            var apiKey = Environment.GetEnvironmentVariable("SENGRID_KEY");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(mail.from);
             var toEmailAddress = new EmailAddress(mail.to);

@@ -51,7 +51,12 @@ namespace sds_notificaciones
             services.AddScoped<MailClient, MailClientSendGrid>();
             
             // Mysql configuration
-            var connectionString = "server=192.168.99.100;user=root;password=traste;database=notificaciones";
+            var dbHost = Environment.GetEnvironmentVariable("DS_HOSTNAME");
+            var dbPort = Environment.GetEnvironmentVariable("DS_PORT");
+            var dbName = Environment.GetEnvironmentVariable("DS_DB_NAME");
+            var dbUser = Environment.GetEnvironmentVariable("DS_USERNAME");
+            var dbPass = Environment.GetEnvironmentVariable("DS_PASSWORD");
+            var connectionString = "server=" + dbHost + ";port=" + dbPort + ";user=" + dbUser + ";password=" + dbPass + ";database=" + dbName;
 
             // Replace with your server version and type.
             // Use 'MariaDbServerVersion' for MariaDB.

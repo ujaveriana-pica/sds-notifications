@@ -12,7 +12,7 @@ namespace sds.notificaciones.infraestructure.Messaging
 {
     public class KafkaConsumerHandler : IHostedService
     {
-        private readonly string topic = "notificaciones";
+        private readonly string topic = "notifications";
         public IServiceScopeFactory serviceScopeFactory;
 
         public KafkaConsumerHandler(IServiceScopeFactory serviceScopeFactory)
@@ -23,8 +23,13 @@ namespace sds.notificaciones.infraestructure.Messaging
         {
             var conf = new ConsumerConfig
             {
-                GroupId = "notificaciones_consumer_group",
-                BootstrapServers = "localhost:9092",
+                GroupId = "notifications_consumer_group",
+                //BootstrapServers = "localhost:9092",
+				BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_SERVER"),
+                SaslMechanism = SaslMechanism.Plain,
+                SecurityProtocol = SecurityProtocol.SaslSsl,
+                SaslUsername = Environment.GetEnvironmentVariable("KAFKA_USERNAME"),
+                SaslPassword = Environment.GetEnvironmentVariable("KAFKA_PASSWORD"),
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
             using (var builder = new ConsumerBuilder<Ignore, 
