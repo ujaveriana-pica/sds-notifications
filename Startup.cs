@@ -38,15 +38,8 @@ namespace sds_notificaciones
             });
 
             // Kafka consumer
-            /*
-            var consumerConfig = Configuration.GetSection("ConsumerConfig").Get<ConsumerConfig>();
-            var consumer = new ConsumerBuilder<string, int>(consumerConfig).Build();
-            consumer.Subscribe("notificaciones");
-
-            services.AddHostedService(sp =>
-                new KafkaConsumer(sp.GetRequiredService<ILogger<KafkaConsumer>>(), consumer));
-                */
-            services.AddSingleton<IHostedService, KafkaConsumerHandler>();
+            services.AddHostedService<KafkaConsumerHandler>();
+            //services.AddSingleton<IHostedService, KafkaConsumerHandler>();
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
             services.AddScoped<MailRepository, MailRepositoryImpl>();
             services.AddScoped<MailClient, MailClientSendGrid>();

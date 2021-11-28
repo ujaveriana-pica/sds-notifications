@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace sds.notificaciones.infraestructure.Messaging
 {
-    public class KafkaConsumerHandler : IHostedService
+    public class KafkaConsumerHandler : BackgroundService
     {
         private readonly string topic = "notifications";
         public IServiceScopeFactory serviceScopeFactory;
@@ -19,8 +19,9 @@ namespace sds.notificaciones.infraestructure.Messaging
         {
             this.serviceScopeFactory = serviceScopeFactory;
         }
-        public Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            await Task.Yield();
             var conf = new ConsumerConfig
             {
                 GroupId = "notifications_consumer_group",
@@ -53,7 +54,7 @@ namespace sds.notificaciones.infraestructure.Messaging
                         catch(JsonException ex) 
                         {
                             Console.WriteLine(ex.Message);
-                        }
+                        }                        
                     }
                 }
                 catch (Exception)
@@ -61,9 +62,8 @@ namespace sds.notificaciones.infraestructure.Messaging
                     builder.Close();
                 }
             }
-            return Task.CompletedTask;
         }
-        public Task StopAsync(CancellationToken cancellationToken)
+        public override Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
