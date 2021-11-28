@@ -31,6 +31,7 @@ namespace sds_notificaciones
         {
 
             services.AddControllers();
+            services.AddHealthChecks();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "sds_notificaciones", Version = "v1" });
@@ -97,6 +98,7 @@ namespace sds_notificaciones
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/q/health");
             });
         }
     }
