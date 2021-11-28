@@ -2,6 +2,7 @@ using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.DTO;
 using Antlr4.StringTemplate;
 using sds.notificaciones.core.entities;
+using System;
 
 namespace sds.notificaciones.core.services {
     public class NotificacionServiceImpl : NotificacionService
@@ -19,11 +20,12 @@ namespace sds.notificaciones.core.services {
             var mail = GenerateMail(notificacion);
             mailClient.send(mail);
             mailRepository.Save(mail);
+            Console.WriteLine("Notificacion enviada");
         }
 
         private Mail GenerateMail(Notificacion notificacion) 
         {
-            Template template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> fue radicado.");
+            Template template = getTemplate(notificacion.template);
             if(notificacion.vars.ContainsKey("nombre")) {
                 template.Add("nombre", notificacion.vars["nombre"]);
             }
@@ -34,10 +36,24 @@ namespace sds.notificaciones.core.services {
             var mail = new Mail {
                 from = "castellanosmjuanc@javeriana.edu.co",
                 to = notificacion.to,
-                subject = "SDS - Estado de su trámite",
+                subject = "Ventanilla de trámites SDS - Estado de su trámite",
                 body = body
             };
             return mail;
+        }
+
+        private Template getTemplate(string nombreTemplate) {
+            Template template = null;
+            if ("tramite-radicado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
+                template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> fue radicado.");
+            } else if ("tramite-aprobado-generado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
+                template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> fue aprobado y ya se encuentra generada la resolución para su desgarga en la ventanilla de trámites.");
+            } else if ("tramite-desaprobado-generado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
+                template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> no fue aprobado y ya se encuentra generada la resolución para su desgarga en la ventanilla de trámites.");
+            } else {
+                template = new Template("Correo sin plantilla. Nombre template: " + nombreTemplate);
+            }
+            return template; 
         }
     }
 }
