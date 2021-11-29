@@ -7,6 +7,7 @@ using System.Text.Json;
 using sds.notificaciones.core.DTO;
 using sds.notificaciones.core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace sds.notificaciones.infraestructure.Messaging
 {
@@ -14,27 +15,17 @@ namespace sds.notificaciones.infraestructure.Messaging
     {
         private readonly string topic = "notifications";
         public IServiceScopeFactory serviceScopeFactory;
+        private readonly ConsumerConfig consumerConfig;
 
-        public KafkaConsumerHandler(IServiceScopeFactory serviceScopeFactory)
+        public KafkaConsumerHandler(IServiceScopeFactory serviceScopeFactory, ConsumerConfig consumerConfig)
         {
             this.serviceScopeFactory = serviceScopeFactory;
+            this.consumerConfig = consumerConfig;
         }
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             await Task.Yield();
-            var conf = new ConsumerConfig
-            {
-                GroupId = "notifications_consumer_group",
-                //BootstrapServers = "localhost:9092",
-				BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_SERVER"),
-                SaslMechanism = SaslMechanism.Plain,
-                SecurityProtocol = SecurityProtocol.SaslSsl,
-                SaslUsername = Environment.GetEnvironmentVariable("KAFKA_USERNAME"),
-                SaslPassword = Environment.GetEnvironmentVariable("KAFKA_PASSWORD"),
-                AutoOffsetReset = AutoOffsetReset.Earliest
-            };
-            using (var builder = new ConsumerBuilder<Ignore, 
-                string>(conf).Build())
+            using (var builder = new ConsumerBuilder<Ignore, string>(consumerConfig).Build())
             {
                 builder.Subscribe(topic);
                 try

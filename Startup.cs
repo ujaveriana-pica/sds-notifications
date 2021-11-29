@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.services;
@@ -14,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using sds.notificaciones.infraestructure.Clients;
 using sds.notificaciones.infraestructure.Messaging;
 using Prometheus;
+using Confluent.Kafka;
 
 namespace sds_notificaciones
 {
@@ -29,18 +29,30 @@ namespace sds_notificaciones
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "sds_notificaciones", Version = "v1" });
             });
-
-            // Kafka consumer
+            // Kafka
+            services.AddSingleton<ConsumerConfig>(option => {
+                return new ConsumerConfig
+                {
+                    GroupId = "notifications_consumer_group",
+                    //BootstrapServers = "localhost:9092",
+                    BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_SERVER"),
+                    SaslMechanism = SaslMechanism.Plain,
+                    SecurityProtocol = SecurityProtocol.SaslSsl,
+                    SaslUsername = Environment.GetEnvironmentVariable("KAFKA_USERNAME"),
+                    SaslPassword = Environment.GetEnvironmentVariable("KAFKA_PASSWORD"),
+                    AutoOffsetReset = AutoOffsetReset.Earliest
+                };
+            });
             services.AddHostedService<KafkaConsumerHandler>();
-            //services.AddSingleton<IHostedService, KafkaConsumerHandler>();
+
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
+            services.AddScoped<TemplateService, TemplateServiceImpl>();
             services.AddScoped<MailRepository, MailRepositoryImpl>();
             services.AddScoped<MailClient, MailClientSendGrid>();
             
@@ -65,7 +77,7 @@ namespace sds_notificaciones
                     .UseMySql(connectionString, serverVersion)
                     // The following three options help with debugging, but should
                     // be changed or removed for production.
-                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    //.LogTo(Console.WriteLine, LogLevel.Information)
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
             );

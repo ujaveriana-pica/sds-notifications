@@ -4,6 +4,6 @@ namespace sds.notificaciones.core.Interfaces
 {
     public interface MailClient
     {
-        void send(Mail mail);
+        void Send(Mail mail);
     }
 }
