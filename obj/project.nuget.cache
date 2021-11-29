@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "O6snZdAjzUV14h+GvMdRTxCVupvpduRktMfApX18bHW3YYKATiXRAX1PzdPjgZprjs4YiovEpGgz1D3lbpT1Rw==",
+  "dgSpecHash": "j3xucg/gSBovj89hWHYD/hgp/mDm6C5KcrJ9r1wl1gnYCvi6u6UYSNdXTVcNNrNtJbGaH2bo3aHTLjF72wQ0lQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\jcast\\proyectos\\pica\\proyecto\\sds-notificaciones\\sds-notificaciones.csproj",
   "expectedPackageFiles": [
@@ -18,6 +18,7 @@
     "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.2\\microsoft.extensions.dependencyinjection.5.0.2.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.http\\3.1.9\\microsoft.extensions.http.3.1.9.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.logging\\5.0.0\\microsoft.extensions.logging.5.0.0.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
@@ -30,6 +31,8 @@
     "C:\\Users\\jcast\\.nuget\\packages\\netstandard.library\\1.6.0\\netstandard.library.1.6.0.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\newtonsoft.json\\9.0.1\\newtonsoft.json.9.0.1.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\5.0.3\\pomelo.entityframeworkcore.mysql.5.0.3.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\prometheus-net\\5.0.1\\prometheus-net.5.0.1.nupkg.sha512",
+    "C:\\Users\\jcast\\.nuget\\packages\\prometheus-net.aspnetcore\\5.0.1\\prometheus-net.aspnetcore.5.0.1.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\runtime.native.system\\4.0.0\\runtime.native.system.4.0.0.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\runtime.native.system.io.compression\\4.1.0\\runtime.native.system.io.compression.4.1.0.nupkg.sha512",
     "C:\\Users\\jcast\\.nuget\\packages\\runtime.native.system.net.http\\4.0.1\\runtime.native.system.net.http.4.0.1.nupkg.sha512",
