@@ -8,7 +8,7 @@ namespace sds.notificaciones.infraestructure.Clients
 {
     public class MailClientSendGrid: MailClient
     {
-        public void send(Mail mail) 
+        public void Send(Mail mail) 
         {
             var apiKey = Environment.GetEnvironmentVariable("SENGRID_KEY");
             var client = new SendGridClient(apiKey);

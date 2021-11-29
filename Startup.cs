@@ -37,10 +37,11 @@ namespace sds_notificaciones
 
             // Kafka consumer
             services.AddHostedService<KafkaConsumerHandler>();
-            //services.AddSingleton<IHostedService, KafkaConsumerHandler>();
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
+            services.AddScoped<TemplateService, TemplateServiceImpl>();
             services.AddScoped<MailRepository, MailRepositoryImpl>();
             services.AddScoped<MailClient, MailClientSendGrid>();
+            
             
             // Mysql configuration
             var dbHost = Environment.GetEnvironmentVariable("DS_HOSTNAME");
