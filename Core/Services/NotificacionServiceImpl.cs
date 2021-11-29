@@ -1,6 +1,7 @@
 using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.DTO;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace sds.notificaciones.core.services {
     public class NotificacionServiceImpl : NotificacionService
@@ -21,10 +22,16 @@ namespace sds.notificaciones.core.services {
         public void send(Notificacion notificacion) 
         {
             var mail = templateService.GenerateMail(notificacion);
-            mailClient.Send(mail);
             mailRepository.Save(mail);
-            logger.LogInformation("Notificacion enviada a " + notificacion.to);
-
+            string sendMail = Environment.GetEnvironmentVariable("SEND_MAIL");
+            if(sendMail != null && sendMail.Equals("true", StringComparison.CurrentCultureIgnoreCase)) 
+            {
+                mailClient.Send(mail);
+                logger.LogInformation("Notificacion con plantilla " + notificacion.template + " enviada a " + notificacion.to);
+            } 
+            else {
+                logger.LogInformation("Notificacion con plantilla " + notificacion.template + " enviada a " + notificacion.to + " - Envio de correo deshabilitado");
+            }
         }
 
     }

@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using sds.notificaciones.infraestructure.Clients;
 using sds.notificaciones.infraestructure.Messaging;
 using Prometheus;
+using Confluent.Kafka;
 
 namespace sds_notificaciones
 {
@@ -34,14 +35,26 @@ namespace sds_notificaciones
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "sds_notificaciones", Version = "v1" });
             });
-
-            // Kafka consumer
+            // Kafka
+            services.AddSingleton<ConsumerConfig>(option => {
+                return new ConsumerConfig
+                {
+                    GroupId = "notifications_consumer_group",
+                    //BootstrapServers = "localhost:9092",
+                    BootstrapServers = Environment.GetEnvironmentVariable("KAFKA_SERVER"),
+                    SaslMechanism = SaslMechanism.Plain,
+                    SecurityProtocol = SecurityProtocol.SaslSsl,
+                    SaslUsername = Environment.GetEnvironmentVariable("KAFKA_USERNAME"),
+                    SaslPassword = Environment.GetEnvironmentVariable("KAFKA_PASSWORD"),
+                    AutoOffsetReset = AutoOffsetReset.Earliest
+                };
+            });
             services.AddHostedService<KafkaConsumerHandler>();
+
             services.AddScoped<NotificacionService, NotificacionServiceImpl>();
             services.AddScoped<TemplateService, TemplateServiceImpl>();
             services.AddScoped<MailRepository, MailRepositoryImpl>();
             services.AddScoped<MailClient, MailClientSendGrid>();
-            
             
             // Mysql configuration
             var dbHost = Environment.GetEnvironmentVariable("DS_HOSTNAME");
