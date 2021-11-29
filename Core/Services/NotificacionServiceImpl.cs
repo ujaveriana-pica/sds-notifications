@@ -4,15 +4,15 @@ using Microsoft.Extensions.Logging;
 using System;
 
 namespace sds.notificaciones.core.services {
-    public class NotificacionServiceImpl : NotificacionService
+    public class NotificacionServiceImpl : INotificacionService
     {
-        private readonly MailRepository mailRepository;
-        private readonly MailClient mailClient;
-        private readonly TemplateService templateService;
+        private readonly IMailRepository mailRepository;
+        private readonly IMailClient mailClient;
+        private readonly ITemplateService templateService;
         private readonly ILogger<NotificacionServiceImpl> logger;
 
-        public NotificacionServiceImpl(ILogger<NotificacionServiceImpl> logger, MailRepository mailRepository, 
-            MailClient mailClient, TemplateService templateService)
+        public NotificacionServiceImpl(ILogger<NotificacionServiceImpl> logger, IMailRepository mailRepository, 
+            IMailClient mailClient, ITemplateService templateService)
         {
             this.logger = logger;
             this.mailRepository = mailRepository;

@@ -14,7 +14,7 @@ namespace sds.notificaciones.infraestructure.Messaging
     public class KafkaConsumerHandler : BackgroundService
     {
         private readonly string topic = "notifications";
-        public IServiceScopeFactory serviceScopeFactory;
+        private IServiceScopeFactory serviceScopeFactory;
         private readonly ConsumerConfig consumerConfig;
 
         public KafkaConsumerHandler(IServiceScopeFactory serviceScopeFactory, ConsumerConfig consumerConfig)
@@ -38,7 +38,7 @@ namespace sds.notificaciones.infraestructure.Messaging
                             var notificacion = JsonSerializer.Deserialize<Notificacion>(consumer.Message.Value);
                             using (var scope = serviceScopeFactory.CreateScope())
                             {
-                                NotificacionService notificacionService = scope.ServiceProvider.GetRequiredService<NotificacionService>();
+                                INotificacionService notificacionService = scope.ServiceProvider.GetRequiredService<INotificacionService>();
                                 notificacionService.send(notificacion);
                             }
                         }

@@ -2,8 +2,8 @@ using sds.notificaciones.core.entities;
 
 namespace sds.notificaciones.core.Interfaces 
 {
-    public interface MailRepository
+    public interface IMailClient
     {
-        void Save(Mail mail);
+        void Send(Mail mail);
     }
 }
