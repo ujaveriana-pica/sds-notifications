@@ -3,15 +3,18 @@ using sds.notificaciones.core.DTO;
 using Antlr4.StringTemplate;
 using sds.notificaciones.core.entities;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace sds.notificaciones.core.services {
     public class NotificacionServiceImpl : NotificacionService
     {
         private readonly MailRepository mailRepository;
         private readonly MailClient mailClient;
+        private readonly ILogger<NotificacionServiceImpl> logger;
 
-        public NotificacionServiceImpl(MailRepository mailRepository, MailClient mailClient)
+        public NotificacionServiceImpl(ILogger<NotificacionServiceImpl> logger, MailRepository mailRepository, MailClient mailClient)
         {
+            this.logger = logger;
             this.mailRepository = mailRepository;
             this.mailClient = mailClient;
         }
@@ -20,7 +23,8 @@ namespace sds.notificaciones.core.services {
             var mail = GenerateMail(notificacion);
             mailClient.send(mail);
             mailRepository.Save(mail);
-            Console.WriteLine("Notificacion enviada");
+            logger.LogInformation("Notificacion enviada a " + notificacion.to);
+
         }
 
         private Mail GenerateMail(Notificacion notificacion) 

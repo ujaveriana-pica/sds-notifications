@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.services;
@@ -29,7 +28,6 @@ namespace sds_notificaciones
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSwaggerGen(c =>
@@ -65,7 +63,7 @@ namespace sds_notificaciones
                     .UseMySql(connectionString, serverVersion)
                     // The following three options help with debugging, but should
                     // be changed or removed for production.
-                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    //.LogTo(Console.WriteLine, LogLevel.Information)
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
             );
