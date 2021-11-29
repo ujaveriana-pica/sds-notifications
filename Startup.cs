@@ -13,7 +13,7 @@ using sds.notificaciones.infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
 using sds.notificaciones.infraestructure.Clients;
 using sds.notificaciones.infraestructure.Messaging;
-using Confluent.Kafka;
+using Prometheus;
 
 namespace sds_notificaciones
 {
@@ -88,10 +88,13 @@ namespace sds_notificaciones
 
             app.UseAuthorization();
 
+            app.UseHttpMetrics();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/q/health");
+                endpoints.MapMetrics();
             });
         }
     }
