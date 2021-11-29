@@ -1,7 +1,6 @@
 using sds.notificaciones.core.Interfaces;
 using sds.notificaciones.core.DTO;
-using Antlr4.StringTemplate;
-using sds.notificaciones.core.entities;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace sds.notificaciones.core.services {
@@ -9,51 +8,31 @@ namespace sds.notificaciones.core.services {
     {
         private readonly MailRepository mailRepository;
         private readonly MailClient mailClient;
+        private readonly TemplateService templateService;
+        private readonly ILogger<NotificacionServiceImpl> logger;
 
-        public NotificacionServiceImpl(MailRepository mailRepository, MailClient mailClient)
+        public NotificacionServiceImpl(ILogger<NotificacionServiceImpl> logger, MailRepository mailRepository, 
+            MailClient mailClient, TemplateService templateService)
         {
+            this.logger = logger;
             this.mailRepository = mailRepository;
             this.mailClient = mailClient;
+            this.templateService = templateService;
         }
         public void send(Notificacion notificacion) 
         {
-            var mail = GenerateMail(notificacion);
-            mailClient.send(mail);
+            var mail = templateService.GenerateMail(notificacion);
             mailRepository.Save(mail);
-            Console.WriteLine("Notificacion enviada");
+            string sendMail = Environment.GetEnvironmentVariable("SEND_MAIL");
+            if(sendMail != null && sendMail.Equals("true", StringComparison.CurrentCultureIgnoreCase)) 
+            {
+                mailClient.Send(mail);
+                logger.LogInformation("Notificacion con plantilla " + notificacion.template + " enviada a " + notificacion.to);
+            } 
+            else {
+                logger.LogInformation("Notificacion con plantilla " + notificacion.template + " enviada a " + notificacion.to + " - Envio de correo deshabilitado");
+            }
         }
 
-        private Mail GenerateMail(Notificacion notificacion) 
-        {
-            Template template = getTemplate(notificacion.template);
-            if(notificacion.vars.ContainsKey("nombre")) {
-                template.Add("nombre", notificacion.vars["nombre"]);
-            }
-            if(notificacion.vars.ContainsKey("tramiteId")) {
-                template.Add("tramiteId", notificacion.vars["tramiteId"]);
-            }
-            string body = template.Render();
-            var mail = new Mail {
-                from = "castellanosmjuanc@javeriana.edu.co",
-                to = notificacion.to,
-                subject = "Ventanilla de trámites SDS - Estado de su trámite",
-                body = body
-            };
-            return mail;
-        }
-
-        private Template getTemplate(string nombreTemplate) {
-            Template template = null;
-            if ("tramite-radicado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
-                template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> fue radicado.");
-            } else if ("tramite-aprobado-generado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
-                template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> fue aprobado y ya se encuentra generada la resolución para su desgarga en la ventanilla de trámites.");
-            } else if ("tramite-desaprobado-generado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
-                template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> no fue aprobado y ya se encuentra generada la resolución para su desgarga en la ventanilla de trámites.");
-            } else {
-                template = new Template("Correo sin plantilla. Nombre template: " + nombreTemplate);
-            }
-            return template; 
-        }
     }
 }
