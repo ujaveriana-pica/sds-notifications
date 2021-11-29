@@ -6,7 +6,7 @@ using System;
 
 namespace sds.notificaciones.infraestructure.Clients
 {
-    public class MailClientSendGrid: MailClient
+    public class MailClientSendGrid: IMailClient
     {
         public void Send(Mail mail) 
         {

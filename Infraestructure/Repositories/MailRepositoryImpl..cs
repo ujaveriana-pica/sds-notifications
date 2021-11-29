@@ -4,7 +4,7 @@ using sds.notificaciones.infraestructure.Context;
 
 namespace sds.notificaciones.infraestructure.repositories
 {
-    public class MailRepositoryImpl : MailRepository 
+    public class MailRepositoryImpl : IMailRepository 
     {
         protected readonly DbContextImpl dbContextImpl;
         
