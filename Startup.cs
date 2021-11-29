@@ -51,10 +51,10 @@ namespace sds_notificaciones
             });
             services.AddHostedService<KafkaConsumerHandler>();
 
-            services.AddScoped<NotificacionService, NotificacionServiceImpl>();
-            services.AddScoped<TemplateService, TemplateServiceImpl>();
-            services.AddScoped<MailRepository, MailRepositoryImpl>();
-            services.AddScoped<MailClient, MailClientSendGrid>();
+            services.AddScoped<INotificacionService, NotificacionServiceImpl>();
+            services.AddScoped<ITemplateService, TemplateServiceImpl>();
+            services.AddScoped<IMailRepository, MailRepositoryImpl>();
+            services.AddScoped<IMailClient, MailClientSendGrid>();
             
             // Mysql configuration
             var dbHost = Environment.GetEnvironmentVariable("DS_HOSTNAME");
