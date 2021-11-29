@@ -38,7 +38,7 @@ namespace sds.notificaciones.infraestructure.Messaging
                             var notificacion = JsonSerializer.Deserialize<Notificacion>(consumer.Message.Value);
                             using (var scope = serviceScopeFactory.CreateScope())
                             {
-                                NotificacionService notificacionService = scope.ServiceProvider.GetRequiredService<NotificacionService>();
+                                INotificacionService notificacionService = scope.ServiceProvider.GetRequiredService<INotificacionService>();
                                 notificacionService.send(notificacion);
                             }
                         }

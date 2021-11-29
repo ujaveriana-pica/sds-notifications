@@ -5,7 +5,7 @@ using System;
 using sds.notificaciones.core.Interfaces;
 
 namespace sds.notificaciones.core.services {
-    public class TemplateServiceImpl: TemplateService {
+    public class TemplateServiceImpl: ITemplateService {
         public Mail GenerateMail(Notificacion notificacion) 
         {
             Template template = getTemplate(notificacion.template);
@@ -25,7 +25,7 @@ namespace sds.notificaciones.core.services {
             return mail;
         }
 
-        private Template getTemplate(string nombreTemplate) {
+        private static Template getTemplate(string nombreTemplate) {
             Template template = null;
             if ("tramite-radicado".Equals(nombreTemplate, StringComparison.CurrentCultureIgnoreCase)) {
                 template = new Template("Señor: <nombre>: Su tramite con código <tramiteId> fue radicado.");
