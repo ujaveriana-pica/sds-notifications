@@ -71,7 +71,6 @@ namespace sds_notificaciones
             //var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
             var serverVersion = ServerVersion.AutoDetect(connectionString);
 
-            // Replace 'YourDbContext' with the name of your own DbContext derived class.
             services.AddDbContext<DbContextImpl>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(connectionString, serverVersion)
